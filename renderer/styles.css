@@ -1,0 +1,497 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  background: transparent;
+  overflow: hidden;
+  width: 350px;
+  height: 550px;
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+#baymax-container {
+  position: relative;
+  width: 350px;
+  height: 550px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ── Speech Bubble ── */
+
+#speech-bubble {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 20px;
+  padding: 12px 18px;
+  max-width: 310px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  -webkit-app-region: no-drag;
+}
+
+#speech-bubble.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-10px) scale(0.95);
+  pointer-events: none;
+}
+
+#speech-text {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  color: #2c2c2c;
+  line-height: 1.5;
+  text-align: center;
+}
+
+#speech-arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid white;
+}
+
+/* ── Baymax Wrapper ── */
+
+#baymax {
+  -webkit-app-region: no-drag;
+  cursor: pointer;
+  transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 10;
+  position: relative;
+}
+
+#baymax.hidden-below {
+  transform: translateY(400px);
+}
+
+#baymax.visible {
+  transform: translateY(0);
+}
+
+#baymax.sleeping {
+  transform: translateY(340px);
+  transition: transform 1.2s ease-in;
+}
+
+#baymax-figure {
+  position: relative;
+  width: 350px;
+  height: 430px;
+}
+
+#baymax.breathing #baymax-figure {
+  animation: breathe 3.5s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%      { transform: scale(1.006, 1.004) translateY(-2px); }
+}
+
+/* ═══════════════════════════════════
+   HEAD (from peterpan-png: 90x60)
+   ═══════════════════════════════════ */
+
+.head {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  background-color: white;
+  border-radius: 50%;
+  width: 90px;
+  height: 60px;
+  margin-left: -45px;
+  box-shadow:
+    0 -15px 30px rgba(23, 34, 45, 0.12) inset,
+    0 5px 15px rgba(23, 34, 45, 0.1);
+  z-index: 10;
+}
+
+/* Eye line across the head */
+.head::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background-color: #91969C;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -2px 0 0 -17px;
+}
+
+/* ── Eyes ── */
+
+.head-lefteye,
+.head-righteye {
+  position: absolute;
+  top: 50%;
+  z-index: 11;
+}
+
+.head-lefteye {
+  left: 50%;
+  margin-left: -25px;
+  margin-top: -5px;
+}
+
+.head-righteye {
+  left: 50%;
+  margin-left: 15px;
+  margin-top: -5px;
+}
+
+.eye {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #202B36;
+  transition: transform 0.1s ease-out;
+}
+
+/* Blink (from peterpan-png: double blink) */
+.eye.blink {
+  animation: blink 220ms ease-in-out;
+}
+
+@keyframes blink {
+  0%, 100% { transform: scaleY(1); }
+  40%, 60% { transform: scaleY(0.1); }
+}
+
+/* ═══════════════════════════════════
+   BODY (from peterpan-png: chest+belly)
+   ═══════════════════════════════════ */
+
+.bay-body {
+  position: relative;
+}
+
+.chest {
+  position: absolute;
+  left: 50%;
+  top: 50px;
+  margin-left: -95px;
+  width: 190px;
+  height: 260px;
+  background-color: white;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.chest-i {
+  position: absolute;
+  left: 60%;
+  top: 15%;
+  display: block;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow:
+    0 -5px 8px rgba(23, 34, 45, 0.15) inset,
+    2px 3px 2px rgba(23, 34, 45, 0.05);
+  z-index: 2;
+}
+
+.belly {
+  position: absolute;
+  left: 50%;
+  top: 58px;
+  width: 240px;
+  height: 310px;
+  margin-left: -120px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: white;
+  box-shadow:
+    0 -25px 40px rgba(23, 34, 45, 0.15) inset,
+    0 5px 15px rgba(23, 34, 45, 0.25);
+  z-index: 1;
+}
+
+/* ═══════════════════════════════════
+   ARMS (from peterpan-png: pseudo-elements)
+   ═══════════════════════════════════ */
+
+.arm::before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 70px;
+  margin-left: -45px;
+  width: 90px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.left.arm::before {
+  transform: translateX(-80px) rotate(30deg);
+}
+
+.right.arm::before {
+  transform: translateX(80px) rotate(-30deg);
+}
+
+.arm::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  width: 80px;
+  height: 150px;
+  top: 176px;
+  margin-left: -40px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 4px -10px 10px rgba(23, 34, 45, 0.2) inset;
+}
+
+.right.arm::after {
+  transform: rotate(-5deg) translateX(110px);
+}
+
+.left.arm::after {
+  transform: rotate(5deg) translateX(-110px);
+}
+
+/* Wave animation */
+@keyframes wave-arm {
+  0%   { transform: translateX(80px) rotate(-30deg); }
+  15%  { transform: translateX(80px) rotate(-55deg); }
+  30%  { transform: translateX(80px) rotate(-35deg); }
+  45%  { transform: translateX(80px) rotate(-50deg); }
+  60%  { transform: translateX(80px) rotate(-38deg); }
+  75%  { transform: translateX(80px) rotate(-45deg); }
+  100% { transform: translateX(80px) rotate(-30deg); }
+}
+
+.right.arm.waving::before {
+  animation: wave-arm 1.3s ease-in-out;
+  transform-origin: bottom center;
+}
+
+/* ═══════════════════════════════════
+   LEGS (from peterpan-png: 50x100)
+   ═══════════════════════════════════ */
+
+.left.leg,
+.right.leg {
+  position: absolute;
+  left: 50%;
+  top: 339px;
+  width: 50px;
+  height: 100px;
+  background-color: white;
+  box-shadow: -7px -6px 7px rgba(23, 34, 45, 0.1) inset;
+}
+
+.left.leg {
+  border-radius: 0 0 15px 15px;
+  transform: translateX(-50px);
+}
+
+.right.leg {
+  transform: translateX(0px);
+  border-radius: 0 0 15px 15px;
+}
+
+/* ═══════════════════════════════════
+   CHARGING CASE
+   ═══════════════════════════════════ */
+
+#charging-case {
+  position: relative;
+  width: 260px;
+  z-index: 0;
+  margin-top: -55px;
+}
+
+#case-top {
+  width: 260px;
+  height: 16px;
+  background: linear-gradient(180deg, #d4342a, #c0392b);
+  border-radius: 10px 10px 0 0;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+}
+
+#case-bottom {
+  width: 260px;
+  height: 42px;
+  background: linear-gradient(180deg, #e74c3c, #c0392b);
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* ═══════════════════════════════════
+   CONTEXT MENU
+   ═══════════════════════════════════ */
+
+#context-menu {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  padding: 6px 0;
+  z-index: 1000;
+  min-width: 170px;
+  -webkit-app-region: no-drag;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.menu-item {
+  padding: 9px 18px;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.menu-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.menu-item:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+.menu-item:last-child {
+  border-radius: 0 0 12px 12px;
+}
+
+.menu-separator {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
+  margin: 4px 8px;
+}
+
+/* ═══════════════════════════════════
+   DRAG & WOBBLE
+   ═══════════════════════════════════ */
+
+#baymax.dragging {
+  cursor: grabbing;
+}
+
+#baymax.wobble #baymax-figure {
+  animation: wobble 0.6s ease-in-out;
+}
+
+@keyframes wobble {
+  0%   { transform: rotate(0deg); }
+  15%  { transform: rotate(-8deg); }
+  30%  { transform: rotate(6deg); }
+  45%  { transform: rotate(-4deg); }
+  60%  { transform: rotate(3deg); }
+  75%  { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* ═══════════════════════════════════
+   MOOD REACTIONS
+   ═══════════════════════════════════ */
+
+/* Head tilt */
+#baymax.tilting .head {
+  animation: head-tilt 2s ease-in-out;
+}
+
+@keyframes head-tilt {
+  0%, 100% { transform: rotate(0deg); }
+  20%, 80% { transform: rotate(12deg) translateX(3px); }
+}
+
+/* Surprised — eyes grow bigger */
+.eye.surprised {
+  animation: surprise 1.5s ease-in-out;
+}
+
+@keyframes surprise {
+  0%, 100% { transform: scale(1); }
+  10%, 70% { transform: scale(1.8); }
+}
+
+/* Sad — eyes droop */
+.eye.sad {
+  animation: sad-eyes 3s ease-in-out;
+}
+
+@keyframes sad-eyes {
+  0%, 100% { transform: scaleY(1) translateY(0); }
+  20%, 80% { transform: scaleY(0.6) translateY(2px); }
+}
+
+/* Happy squint */
+.eye.happy {
+  animation: happy-eyes 2s ease-in-out;
+}
+
+@keyframes happy-eyes {
+  0%, 100% { transform: scaleY(1); }
+  20%, 80% { transform: scaleY(0.4); }
+}
+
+/* ═══════════════════════════════════
+   PET / BELLY RUB
+   ═══════════════════════════════════ */
+
+#baymax.being-pet #baymax-figure {
+  animation: pet-jiggle 0.3s ease-in-out;
+}
+
+@keyframes pet-jiggle {
+  0%, 100% { transform: scale(1, 1); }
+  50%      { transform: scale(1.015, 0.985); }
+}
+
+/* Giggle bounce */
+#baymax.giggling #baymax-figure {
+  animation: giggle 0.5s ease-in-out;
+}
+
+@keyframes giggle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25%      { transform: translateY(-5px) scale(1.01, 0.99); }
+  50%      { transform: translateY(0) scale(0.99, 1.01); }
+  75%      { transform: translateY(-3px) scale(1.005, 0.995); }
+}
+
+/* Face poke — rapid blink */
+.eye.poked {
+  animation: rapid-blink 0.5s ease-in-out;
+}
+
+@keyframes rapid-blink {
+  0%   { transform: scaleY(1); }
+  12%  { transform: scaleY(0.1); }
+  25%  { transform: scaleY(1); }
+  37%  { transform: scaleY(0.1); }
+  50%  { transform: scaleY(1); }
+  62%  { transform: scaleY(0.1); }
+  75%  { transform: scaleY(1); }
+  87%  { transform: scaleY(0.1); }
+  100% { transform: scaleY(1); }
+}

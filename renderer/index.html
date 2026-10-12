@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Baymax</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="baymax-container">
+    <!-- Speech Bubble -->
+    <div id="speech-bubble" class="hidden">
+      <p id="speech-text"></p>
+      <div id="speech-arrow"></div>
+    </div>
+
+    <!-- Baymax Character (peterpan-png structure) -->
+    <div id="baymax" class="hidden-below">
+      <div id="baymax-figure">
+        <div class="head">
+          <div class="head-lefteye">
+            <div class="left eye"></div>
+          </div>
+          <div class="head-righteye">
+            <div class="right eye"></div>
+          </div>
+        </div>
+        <div class="bay-body">
+          <div class="chest">
+            <i class="chest-i"></i>
+          </div>
+          <div class="belly"></div>
+          <div class="left arm">
+            <div class="fingers"></div>
+          </div>
+          <div class="right arm">
+            <div class="fingers"></div>
+          </div>
+        </div>
+        <div class="left leg"></div>
+        <div class="right leg"></div>
+      </div>
+    </div>
+
+    <!-- Charging Case -->
+    <div id="charging-case">
+      <div id="case-top"></div>
+      <div id="case-bottom"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
